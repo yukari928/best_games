@@ -1,0 +1,44 @@
+<div class="container">
+        <div class="row">
+
+<div>
+  <h3><%= @user.name %></h3>
+  <% if @user == current_user %>
+    <p><%= link_to "プロフィール編集", edit_user_path%></p>
+  <% end %>
+
+  <% if user_signed_in? && @user == current_user %>
+    <% unless @user.email == "test@example.com" then %>
+      <div class="mt-3">
+        <%= link_to "退会", user_path(current_user.id), class: "destroy-user", method: :delete, "data-confirm" => "本当に退会しますか？" %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>タイトル</th>
+      <th>本文</th>
+      <th>ユーザー</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @posts.each do |post| %>
+    <tr>
+      <td>
+        <%= link_to post_path(post.id) do %>
+          <%= post.title %>
+        <% end %>
+      </td>
+      <td><%= post.body %></td>
+      <td><%= post.user.name %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+</div>
+</div>

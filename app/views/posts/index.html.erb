@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="row">
+
+    <h1>投稿一覧</h1>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>タイトル</th>
+          <th>本文</th>
+          <th>ユーザー</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @posts.each do |post| %>
+        <% if post.user %>
+        <tr>
+          <td>
+            <%= link_to post_path(post.id) do %>
+              <%= post.title %>
+            <% end %>
+          </td>
+          <td><%= post.body %></td>
+          <td>
+            <% @users.each do |user| %>
+              <% if user == post.user %>
+                <%= link_to user_path(user.id) do %>
+                  <%= post.user.name %>
+                <% end %>
+              <% end %>
+            <% end %>
+          </td>
+        </tr>
+        <% end %>
+        <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>
