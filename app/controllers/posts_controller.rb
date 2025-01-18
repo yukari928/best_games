@@ -1,4 +1,6 @@
 class PostsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :ensure_user, only: [:edit, :update, :destroy]
 
   def new
     @post = Post.new
@@ -41,13 +43,20 @@ class PostsController < ApplicationController
   def destroy
     post = Post.find(params[:id])
     post.destroy
-    redirect_to posts_path
+    redirect_to user_path(current_user.id)
   end
 
   private
 
   def post_params
     params.require(:post).permit(:title, :body)
+  end
+
+  def ensure_user
+    post = Post.find(params[:id])
+    unless post.user_id == current_user.id
+      redirect_to posts_path
+    end
   end
 
 end

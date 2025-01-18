@@ -3,8 +3,8 @@
     <div class="col-sm-12 col-md-8 col-lg-6 px-5 mx-auto">
 
 <h1>編集画面</h1>
-  <% if @post.errors.any? %>
-  <%= @post.errors.count %>件のエラーが発生しました
+<% if @post.errors.any? %>
+<%= @post.errors.count %>件のエラーが発生しました
   <ul>
     <% @post.errors.full_messages.each do |message| %>
       <li><%= message %></li>
