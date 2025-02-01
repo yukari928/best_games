@@ -1,0 +1,93 @@
+<div class="container">
+  <div class="row">
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>opinion</th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @posts.each do |post| %>
+        <% if post.user %>
+        <tr>
+          <td>
+            <%= link_to post_path(post.id) do %>
+              <%= post.title %>
+            <% end %>
+          </td>
+          <td><%= post.body %></td>
+          <td>
+            <% @users.each do |user| %>
+              <% if user == post.user %>
+                <%= link_to user_path(user.id) do %>
+                  <%= post.user.name %>
+                <% end %>
+              <% end %>
+            <% end %>
+          </td>
+          <td><%= post.created_at.strftime('%Y/%m/%d') %></td>
+          <td><%= link_to "#{post.post_comments.count} コメント", post_path(post.id), class: "text-secondary" %></td>
+          <td>
+            <% if post.user == current_user %>
+              <%= link_to "編集", edit_post_path(post.id), class: "btn btn-outline-info" %>
+              <%= link_to "削除", post_path(post), method: :delete, "data-confirm" => "本当に削除しますか？", class: "btn btn-outline-dark" %>
+            <% end %>
+          </td>
+        </tr>
+        <% end %>
+        <% end %>
+      </tbody>
+    </table>
+
+
+    <div class="col-md-7 col-sm-10 mx-2 mx-sm-auto my-5">
+
+    <% if @error_comment.present? %>
+    <div id="error_explanation">
+      <%= @error_comment.errors.count %>件のエラーが発生しました
+      <ul>
+        <% @error_comment.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+    <% end %>
+
+    <p>コメント数：<%= @post.post_comments.count %></p>
+
+    <div>
+      <%= form_with model: [@post, @post_comment] do |f| %>
+        <%= f.text_area :comment, rows: '5', placeholder: "コメントをここに" %>
+        <%= f.submit "送信する" %>
+      <% end %>
+    </div>
+
+    <div>
+    <% @post.post_comments.each do |post_comment| %>
+      <div class="border">
+        <p>
+          <%= link_to user_path(post_comment.user.id) do %>
+            <%= post_comment.user.name %>
+          <% end %>
+        </p>
+        <p><%= post_comment.comment %></p>
+        <div class="d-flex justify-content-end">
+          <p><%= post_comment.created_at.strftime('%Y/%m/%d') %></p>
+          <% if post_comment.user == current_user %>
+            <%= link_to "削除", post_post_comment_path(post_comment.post, post_comment), method: :delete, class: "btn btn-outline-dark" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    </div>
+
+    </div>
+  </div>
+</div>

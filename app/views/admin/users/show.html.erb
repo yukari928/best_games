@@ -1,19 +1,19 @@
 <div class="container">
   <div class="row">
 
-    <h1>投稿一覧</h1>
+    <h3><%= @user.name %></h3>
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>タイトル</th>
-          <th>本文</th>
-          <th>ユーザー</th>
+          <th>Title</th>
+          <th>opinion</th>
+          <th>User</th>
+          <th></th>
         </tr>
       </thead>
 
       <tbody>
         <% @posts.each do |post| %>
-        <% if post.user %>
         <tr>
           <td>
             <%= link_to post_path(post.id) do %>
@@ -21,17 +21,9 @@
             <% end %>
           </td>
           <td><%= post.body %></td>
-          <td>
-            <% @users.each do |user| %>
-              <% if user == post.user %>
-                <%= link_to user_path(user.id) do %>
-                  <%= post.user.name %>
-                <% end %>
-              <% end %>
-            <% end %>
-          </td>
+          <td><%= post.user.name %></td>
+          <td><%= link_to "#{post.post_comments.count} コメント", post_path(post.id), class: "text-secondary" %></td>
         </tr>
-        <% end %>
         <% end %>
       </tbody>
     </table>
