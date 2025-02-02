@@ -10,3 +10,7 @@ User.find_or_create_by!(email: "test@example.com") do |user|
   user.email = "test@example.com"
   user.password = "password"
 end
+
+Admin.find_or_create_by!(email: "admin@example.com") do |admin|
+  admin.password = "password"
+end
